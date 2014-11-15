@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Yss</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="nowAddress">当前位置信息</string>
+    <string name="hshowAddressinfo">显示当前位置信息</string>
+    <string name="about">仅供学习交流,不要使用该软件挑战公司考勤制度!</string>
+
+</resources>

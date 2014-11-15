@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    
+    tools:context="com.example.yss.MainActivity" >
+
+    <!-- 标题 -->
+
+    <include
+       
+        layout="@layout/titlebar" />
+
+    <FrameLayout 
+          android:layout_width="match_parent"
+          android:layout_height="match_parent" 
+        >
+        <ListView
+        android:id="@+id/listViewGpslist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+    <!-- 
+
+           <include layout="@layout/userinfo"
+               />
+             -->
+    </FrameLayout>
+ 
+    
+</LinearLayout>
