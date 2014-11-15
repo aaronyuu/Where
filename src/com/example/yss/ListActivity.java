@@ -12,11 +12,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 public class ListActivity extends Activity {
 	Context mContext;
@@ -24,10 +27,22 @@ public class ListActivity extends Activity {
 	Button btnList;
 	Button btnAbout;
 	ListView mList;
-//	TextView mUserInfo;
+	View mView;
+	Button btnSave;
+	Button btnCancle;
+	Button buttonAdd;
+	Button buttonOK;
+	EditText et;
+	// TextView mUserInfo;
 	SQLiteDatabase db;
-	List< Map<String, GPSInfo>> data;
+	List<Map<String, Object>> data;
 	
+	private EditText editTextid;
+	private EditText editTextlo;
+	private EditText editTextla;
+	private EditText editTextaddr;
+	
+
 	private static int DATABASE_VERSION = 1;
 	private static String DATABASE_NAME = "YSSGPS.db";
 	private static String TAB_GPSINFO = "gpsinfo";
@@ -39,9 +54,20 @@ public class ListActivity extends Activity {
 
 		// 获取控件
 		mContext = this;
-//		mUserInfo = (TextView) findViewById(R.id.userinfo);
+		// mUserInfo = (TextView) findViewById(R.id.userinfo);
 		mList = (ListView) findViewById(R.id.listViewGpslist);
-		data=new ArrayList<Map<String,GPSInfo>>();
+		btnCancle = (Button) findViewById(R.id.buttoncancle);
+		btnSave = (Button) findViewById(R.id.buttonsave);
+		buttonAdd=(Button) findViewById(R.id.buttonAdd);
+		buttonOK=(Button) findViewById(R.id.buttonOK);
+		mView = findViewById(R.id.linearlayoutuserinfo);
+
+		editTextid = (EditText) findViewById(R.id.editTextid);
+		editTextlo = (EditText) findViewById(R.id.editTextlo);
+		editTextla = (EditText) findViewById(R.id.editTextla);
+		editTextaddr = (EditText) findViewById(R.id.editTextaddr);
+
+		data = new ArrayList<Map<String, Object>>();
 		titleInit();
 		/**
 		 * 打开或创建数据库,注意数据库版本
@@ -53,79 +79,164 @@ public class ListActivity extends Activity {
 		/**
 		 * 创建数据接口
 		 */
-//		ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
-//				android.R.layout.simple_list_item_1, getList());
-//		//
-//		new ArrayAdapter(context, textViewResourceId, objects)<GPSInfo>(mContext, textViewResourceId)
+		// ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
+		// android.R.layout.simple_list_item_1, getList());
+		// //
+		// new ArrayAdapter(context, textViewResourceId,
+		// objects)<GPSInfo>(mContext, textViewResourceId)
 		/**
-		 * SimpleAdapter
-		 * 1.context 上下文
-		 * data :  List<? extends Map<String, ?>> data 一个Map所组成的List集合
-		 * resource: 布局文件的ID,如R.layout.item_gpsinfo
+		 * SimpleAdapter 1.context 上下文 data : List<? extends Map<String, ?>>
+		 * data 一个Map所组成的List集合 resource: 布局文件的ID,如R.layout.item_gpsinfo
 		 */
-		
-		
-		SimpleAdapter simpleadapter = new SimpleAdapter(mContext, getData(), R.layout.item_gpsinfo, 
-				new String[]{"lo","la","addr"}, 
-				new int[]{R.id.tv_item_lo,R.id.tv_item_la,R.id.tv_item_addr});
-		
-		
-		
+
+		SimpleAdapter simpleadapter = new SimpleAdapter(
+				mContext,
+				getData(),
+				R.layout.item_gpsinfo,
+				new String[] { "_id","lo", "la", "addr" },
+				new int[] { R.id.tv_item_id,R.id.tv_item_lo, R.id.tv_item_la, R.id.tv_item_addr });
+
 		/**
 		 * 绑定接口到ViewList控件
 		 */
-//		mUserList.setAdapter(adapter);
+		// mUserList.setAdapter(adapter);
 		mList.setAdapter(simpleadapter);
+		
 
 		/**
-		 * 设置点击监听事件
+		 * 点击列表项显示修改界面
 		 */
 		mList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				// 获取用户真实姓名
-//				String realName = mUserList.getItemAtPosition(position)
-//						.toString();
-//				// 通过真实姓名,取出用户的所有详细信息
-//				User user = getUserinfo(realName);
-//
-//				// 显示用户详细信息界面.
-//				mUserInfo.setText(user.toString());
-//				mUserInfo.setVisibility(View.VISIBLE);
+				// 设置修改界面值
+				editTextid.setText(String.valueOf(data.get(position).get("_id")));
+				editTextlo.setText(String.valueOf(data.get(position).get("lo")));
+				editTextla.setText(String.valueOf(data.get(position).get("la")));
+				editTextaddr.setText(String.valueOf(data.get(position).get(
+						"addr")));
+				// 显示出来
+				mView.setVisibility(View.VISIBLE);
 
 			}
 		});
 
-//		/**
-//		 * 设置用户详细信息页面的点击事件, 点击后隐藏该页面.
-//		 */
-//		mUserInfo.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				v.setVisibility(View.INVISIBLE);
-//			}
-//		});
-
 		/**
-		 * db.close() 放在 onDestroy()过程中.
+		 * 返回按钮事件, 点击后隐藏该页面.
 		 */
+		btnCancle.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				editTextid.setText("");
+				editTextlo.setText("");
+				editTextla.setText("");
+				editTextaddr.setText("");
+				mView.setVisibility(View.INVISIBLE);
+			}
+		});
+		
+		/**
+		 * 添加按钮
+		 */
+		buttonAdd.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// 显示编辑界面出来就行了
+				mView.setVisibility(View.VISIBLE);
+			}
+		});
+		
+		/**
+		 * 设置前位置
+		 */
+		buttonOK.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// 保存数据到文件
+				double lo = Double.valueOf(editTextlo.getText().toString());
+				double la = Double.valueOf(editTextla.getText().toString());
+				String addr = editTextaddr.getText().toString();
+				
+				boolean isSaved = GPSUtils.setGPSInfo(lo, la, addr);
+				if (!isSaved) {
+					Toast.makeText(mContext, "保存错误", Toast.LENGTH_SHORT).show();
+				}else{
+					Toast.makeText(mContext, "成功设置当前位置,现在打开破解版的CRM软件定位一下吧!", Toast.LENGTH_LONG).show();
+					//打开当前位置界面
+				}
+				
+			}
+		});
+		
+		/**
+		 * 保存按钮事件.
+		 */
+		btnSave.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				double lo,la;
+				long id=-1;
+				
+				String addr;
+				if (editTextid.getText().length()>0){
+					id=Long.valueOf(editTextid.getText().toString());
+				}
+//	检查数据有效性
+				lo=Double.valueOf(editTextlo.getText().toString());
+				la=Double.valueOf(editTextla.getText().toString());
+				addr=editTextaddr.getText().toString();
+				
+				if(saveOrModifyGPSInfo(id, lo, la, addr)>=0){
+					mView.setVisibility(View.INVISIBLE);
+					Toast.makeText(mContext, "保存数据成功!!", Toast.LENGTH_SHORT).show();
+				}else{
+					Toast.makeText(mContext, "保存数据失败", Toast.LENGTH_SHORT).show();
+				}
+								
+			}
+		});
 
 	}
 
-	/**
-	 * 将Users类型的用户信息保存到数据库, 返回值是该条记录成功保存在数据表中的id 返回-1表示保存失败
-	 */
-	private long addUser(User user) {
-
+	
+	private long 	saveOrModifyGPSInfo(long id,double lo,double la,String addr){
 		long rowId = -1;
-		if (getUserCount(user.getRealname()) <= 0) {
-			rowId = db.insert(TAB_GPSINFO, null, user.getContentValues());
+		ContentValues cv=new ContentValues();
+		cv.put("lo", lo);
+		cv.put("la", la);
+		cv.put("addr", addr);
+		
+		if (getCount(id)>0){
+			db.update(TAB_GPSINFO, cv, "_id=?", new String[] { id+"" });
+			rowId=id;
+		}else{
+			rowId = db.insert(TAB_GPSINFO, null, cv);
 		}
+			
 		return rowId;
+		
 	}
+	
+	
+	
+	
+	
+	
+//	/**
+//	 * 将Users类型的用户信息保存到数据库, 返回值是该条记录成功保存在数据表中的id 返回-1表示保存失败
+//	 */
+//	private long addUser(User user) {
+//
+//		long rowId = -1;
+//		if (getUserCount(user.getRealname()) <= 0) {
+//			rowId = db.insert(TAB_GPSINFO, null, user.getContentValues());
+//		}
+//		return rowId;
+//	}
 
 	// public void testAddUser() {
 	// String addUserName;
@@ -178,12 +289,13 @@ public class ListActivity extends Activity {
 		System.out.println("***********************************");
 	}
 
-	private long getUserCount(String realname) {
+	private long getCount(long id) {
+		
 		Cursor cr = db.query(TAB_GPSINFO,
-				new String[] { "count(*) as usercount" }, "name=?",
-				new String[] { realname }, null, null, "_id");
+				new String[] { "count(*) as count" }, "_id=?",
+				new String[] { id+"" }, null, null, "_id");
 		cr.moveToFirst();
-		return cr.getLong(cr.getColumnIndex("usercount"));
+		return cr.getLong(cr.getColumnIndex("count"));
 	}
 
 	/**
@@ -260,7 +372,6 @@ public class ListActivity extends Activity {
 		super.onDestroy();
 	};
 
-	
 	private void titleInit() {
 		btnLocal = (Button) findViewById(R.id.btnLocal);
 		btnList = (Button) findViewById(R.id.btnList);
@@ -272,19 +383,36 @@ public class ListActivity extends Activity {
 		btnAbout.setOnClickListener(YUtils.gotoOtherActivity(mContext));
 	}
 
-	
-	private List<Map<String, GPSInfo>>  getData(){
-		for (int i=0;i<20;i++){
-			Map<String,GPSInfo> map=new HashMap<String,GPSInfo>();
-			GPSInfo gps=new GPSInfo();
-			gps.lo=116+i*0.01;
-			gps.la=39+i*0.01;
-			gps.addr= "位置:"+i;
-			map.put(gps.addr, gps);
+	private List<Map<String, Object>> getData() {
+		// for (int i=0;i<20;i++){
+		// Map<String,Object> map=new HashMap<String,Object>();
+		// // GPSInfo gps=new GPSInfo();
+		// // gps.lo=116+i*0.01;
+		// // gps.la=39+i*0.01;
+		// // gps.addr= "位置:"+i;
+		// // map.put(gps.addr, gps);
+		// map.put("lo", "经度:"+(116+i*0.01));
+		// map.put("la", "纬度:"+(39+i*0.01));
+		// map.put("addr", "地址"+i);
+		// data.add(map);
+		//
+		// }
+
+		Cursor cr = db.query(TAB_GPSINFO, new String[] { "_id", "lo",
+				"la", "addr" }, "status=?", new String[] { "1" },
+				null, null, "_id");
+
+		while (cr.moveToNext()) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("_id",cr.getString(cr.getColumnIndex("_id")));
+			map.put("lo", cr.getString(cr.getColumnIndex("lo")));
+			map.put("la", cr.getString(cr.getColumnIndex("la")));
+			map.put("addr", cr.getString(cr.getColumnIndex("addr")));
 			data.add(map);
-	
 		}
+		cr.close();
+
 		return data;
-		
+
 	}
 }

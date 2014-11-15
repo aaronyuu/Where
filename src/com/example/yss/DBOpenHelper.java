@@ -24,9 +24,9 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		String sql="create table if not exists gpsinfo (" +
 				"_id integer primary key autoincrement, " +
-				"longitude double not null ,  " +
-				"latitude double not  null ,  " +
-				"address text not null  ," +
+				"lo double not null ,  " +
+				"la double not  null ,  " +
+				"addr text not null  ," +
 				"status int default 1)";
 		
 		db.execSQL(sql);
@@ -35,9 +35,9 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 		 * 插入两条测试数据 
 		 * 正式上线的时候要删除
 		 */
-		sql="insert into gpsinfo (longitude,latitude,address) values(116.66666,39.99999,'北京白桥大街')";
+		sql="insert into gpsinfo (lo,la,addr) values(116.66666,39.99999,'北京白桥大街')";
 		db.execSQL(sql);
-		sql="insert into gpsinfo (longitude,latitude,address) values(116.777777,39.88888,'北京一号线哈哈')";
+		sql="insert into gpsinfo (lo,la,addr) values(116.777777,39.88888,'北京一号线哈哈')";
 		db.execSQL(sql);	
 	
 		

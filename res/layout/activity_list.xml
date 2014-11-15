@@ -3,30 +3,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    
     tools:context="com.example.yss.MainActivity" >
 
     <!-- 标题 -->
 
-    <include
-       
-        layout="@layout/titlebar" />
+    <include layout="@layout/titlebar" />
 
-    <FrameLayout 
-          android:layout_width="match_parent"
-          android:layout_height="match_parent" 
-        >
-        <ListView
-        android:id="@+id/listViewGpslist"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
-    <!-- 
+        android:layout_height="match_parent"
+        android:layout_gravity="center" >
 
-           <include layout="@layout/userinfo"
-               />
-             -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical" >
+
+            <ListView
+                android:id="@+id/listViewGpslist"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp" >
+            </ListView>
+
+            <Button
+                android:id="@+id/buttonAdd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignBottom="@+id/listViewGpslist"
+                android:text="添加一个新位置" />
+
+        </RelativeLayout>
+
+       <include layout="@layout/addormodifygpsinfo" /> 
     </FrameLayout>
- 
-    
+
 </LinearLayout>

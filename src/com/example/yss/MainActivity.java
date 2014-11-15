@@ -22,11 +22,11 @@ public class MainActivity extends Activity {
 		tv = (TextView) findViewById(R.id.textViewDangqianWeizhi);
 		mContext = this;
 
-		// 保存测试数据
-		boolean isSaved = GPSUtils.setGPSInfo(126d, 39.8888d, "测试地址");
-		if (!isSaved) {
-			Toast.makeText(this, "保存错误", Toast.LENGTH_SHORT).show();
-		}
+//		// 保存测试数据
+//		boolean isSaved = GPSUtils.setGPSInfo(126d, 39.8888d, "测试地址");
+//		if (!isSaved) {
+//			Toast.makeText(this, "保存错误", Toast.LENGTH_SHORT).show();
+//		}
 
 		tv.setText(GPSUtils.getGPSInfoFromFile());
 
