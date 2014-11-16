@@ -12,13 +12,22 @@
     <include
        
         layout="@layout/titlebar" />
+
     <TextView
         android:id="@+id/userinfo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="40dp"
+        android:layout_height="302dp"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:gravity="center"
         android:text="@string/about"
-        android:textSize="20sp"
-         />
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/buttonReset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="软件重置" />
 
 </LinearLayout>

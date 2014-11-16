@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -21,13 +20,6 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		tv = (TextView) findViewById(R.id.textViewDangqianWeizhi);
 		mContext = this;
-
-//		// ±£¥Ê≤‚ ‘ ˝æ›
-//		boolean isSaved = GPSUtils.setGPSInfo(126d, 39.8888d, "≤‚ ‘µÿ÷∑");
-//		if (!isSaved) {
-//			Toast.makeText(this, "±£¥Ê¥ÌŒÛ", Toast.LENGTH_SHORT).show();
-//		}
-
 		tv.setText(GPSUtils.getGPSInfoFromFile());
 
 		titleInit();

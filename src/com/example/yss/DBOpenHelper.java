@@ -8,8 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBOpenHelper extends SQLiteOpenHelper {
 	
-	
-
 	public DBOpenHelper(Context context, String name, CursorFactory factory,
 			int version) {
 		super(context, name, null, version);
@@ -35,12 +33,8 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 		 * 插入两条测试数据 
 		 * 正式上线的时候要删除
 		 */
-		sql="insert into gpsinfo (lo,la,addr) values(116.66666,39.99999,'北京白桥大街')";
-		db.execSQL(sql);
-		sql="insert into gpsinfo (lo,la,addr) values(116.777777,39.88888,'北京一号线哈哈')";
+		sql="insert into gpsinfo (lo,la,addr) values(116.445755,39.900995,'北京市东城区白桥大街15号')";
 		db.execSQL(sql);	
-	
-		
 	}
 
 	@Override  //当数据库版本变化时会自动执行
