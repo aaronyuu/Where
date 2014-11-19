@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -23,6 +20,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
+
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+
+//import com.baidu.baidulocationdemo.LocationApplication;
 
 public class ListActivity extends Activity {
 	Context mContext;
@@ -47,7 +51,6 @@ public class ListActivity extends Activity {
 	public LocationClient mLocationClient = null;
 	public BDLocationListener myListener = new MyLocationListener();
 
-	
 	SimpleAdapter mSimpleAdapter;
 	private Button buttonDel;
 
@@ -79,6 +82,11 @@ public class ListActivity extends Activity {
 
 		data = new ArrayList<Map<String, Object>>();
 		titleInit();
+
+		/*
+		 * 启动定位
+		 */
+
 		/**
 		 * 打开或创建数据库,注意数据库版本
 		 */
@@ -144,9 +152,12 @@ public class ListActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
+				// 启动GPS定位,
+				startGPS();
 				// 显示编辑界面出来就行了
 				mView.setVisibility(View.VISIBLE);
 			}
+
 		});
 
 		/**
@@ -157,9 +168,9 @@ public class ListActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 
-				 
-				if (editTextid.getText().length() >0) {
-					if (delGPSInfo(Long.valueOf(editTextid.getText().toString())) > 0) {
+				if (editTextid.getText().length() > 0) {
+					if (delGPSInfo(Long
+							.valueOf(editTextid.getText().toString())) > 0) {
 						mView.setVisibility(View.INVISIBLE);
 						// 刷新数据
 						getData();
@@ -187,7 +198,7 @@ public class ListActivity extends Activity {
 				double la = Double.valueOf(editTextla.getText().toString());
 				String addr = editTextaddr.getText().toString();
 
-				boolean isSaved = GPSUtils.setGPSInfo(lo, la, addr);
+				boolean isSaved = YssGPS.setGPSInfo(lo, la, addr);
 				if (!isSaved) {
 					Toast.makeText(mContext, "保存错误", Toast.LENGTH_SHORT).show();
 				} else {
@@ -289,6 +300,21 @@ public class ListActivity extends Activity {
 		btnAbout.setOnClickListener(YUtils.gotoOtherActivity(mContext));
 	}
 
+	private void startGPS() {
+		// TODO Auto-generated method stub
+		myListener = new MyLocationListener();
+		mLocationClient = new LocationClient(getApplicationContext()); // 声明LocationClient类
+		mLocationClient.registerLocationListener(myListener); // 注册监听函数
+
+		LocationClientOption option = new LocationClientOption();
+		option.setOpenGps(true); // 打开GPS
+		option.setCoorType("bd09ll");// 返回的定位结果是百度经纬度,默认值gcj02
+		option.setScanSpan(800);// 设置发起定位请求的间隔时间,大于1000,连续定位,小于1000,定位一次
+		option.setIsNeedAddress(true); // 包含地址信息
+		mLocationClient.setLocOption(option);
+		mLocationClient.start();
+	}
+
 	private List<Map<String, Object>> getData() {
 
 		data.clear();
@@ -308,4 +334,74 @@ public class ListActivity extends Activity {
 		return data;
 
 	}
+
+	/**
+	 * 实现实位回调监听
+	 */
+	public class MyLocationListener implements BDLocationListener {
+
+		@Override
+		public void onReceiveLocation(BDLocation location) {
+			double lo = -1;
+			double la = -1;
+			String addr = "";
+			// Receive Location
+			// StringBuffer sb = new StringBuffer(256);
+			// sb.append("time : ");
+			// sb.append(location.getTime());
+			// sb.append("\nerror code : ");
+			// sb.append(location.getLocType());
+			// sb.append("\nlatitude : ");
+			la = location.getLatitude();
+			// sb.append(location.getLatitude());
+			// sb.append("\nlontitude : ");
+			lo = location.getLongitude();
+			// sb.append(location.getLongitude());
+			// sb.append("\nradius : ");
+			// sb.append(location.getRadius());
+			if (location.getLocType() == BDLocation.TypeGpsLocation) {
+				// sb.append("\nspeed : ");
+				// sb.append(location.getSpeed());
+				// sb.append("\nsatellite : ");
+				// sb.append(location.getSatelliteNumber());
+				// sb.append("\ndirection : ");
+				// sb.append("\naddr : ");
+				addr = location.getAddrStr();
+				// sb.append(location.getAddrStr());
+				// Toast.makeText(mContext, location.getAddrStr(),
+				// Toast.LENGTH_SHORT).show();
+				// sb.append(location.getDirection());
+			} else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {
+				addr = location.getAddrStr();
+				// sb.append("\naddr : ");
+				// sb.append(location.getAddrStr());
+				// //运营商信息
+				// sb.append("\noperationers : ");
+				// sb.append(location.getOperators());
+			}
+			logMsg(lo, la, addr);
+			// Log.i("BaiduLocationApiDem", sb.toString());
+		}
+
+	}
+
+	/**
+	 * 显示请求字符串
+	 * 
+	 * @param str
+	 */
+	public void logMsg(double lo, double la, String addr) {
+		/*
+		 * 将传入的值显示到界面上.
+		 */
+		if (editTextlo != null)
+			editTextlo.setText(lo + "");
+		if (editTextla != null)
+			editTextla.setText(la + "");
+		if (editTextaddr != null)
+			editTextaddr.setText(addr + "");
+		Toast.makeText(mContext, "定位成功!", Toast.LENGTH_LONG).show();
+
+	}
+
 }

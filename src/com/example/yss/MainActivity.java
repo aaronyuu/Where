@@ -20,8 +20,16 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		tv = (TextView) findViewById(R.id.textViewDangqianWeizhi);
 		mContext = this;
-		tv.setText(GPSUtils.getGPSInfoFromFile());
-
+		
+		String s = "";
+		s += "经度(double):" + YssGPS.getLo(0) + "\n";
+		s += "经度(String):" + YssGPS.getLoByString(0+"") + "\n";
+		s += "纬度(double):" + YssGPS.getLa(0) + "\n";
+		s += "纬度:(String)" + YssGPS.getLaByString(0+"") + "\n";
+		s += "地址:" + YssGPS.getAddr("未设置地址!!签到软件取自己定位的地址.") + "\n";
+		
+		//tv.setText(YssGPS.getGPSInfoFromFile());
+		tv.setText(s);
 		titleInit();
 	}
 
