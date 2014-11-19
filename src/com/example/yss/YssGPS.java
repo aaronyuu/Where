@@ -32,6 +32,7 @@ public class YssGPS {
 		if (!file.exists()) {
 			try {
 				file.createNewFile();
+				setGPSInfo(0, 0, "");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -40,6 +41,7 @@ public class YssGPS {
 			file.delete();
 			try {
 				file.createNewFile();
+				setGPSInfo(0, 0, "");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -59,8 +61,10 @@ public class YssGPS {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		if (d<3 || d>54) {
+		if (d < 3 || d > 54) {
 			d = la;
 		}
 
@@ -68,7 +72,7 @@ public class YssGPS {
 	}
 
 	static final double getLo(double lo) {
-
+		checkFile(FILENAME);
 		double d = -1;
 		try {
 			DataInputStream dis = new DataInputStream(new FileInputStream(
@@ -80,14 +84,17 @@ public class YssGPS {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		if (d<73 || d>136) {
+		if (d < 73 || d > 136) {
 			d = lo;
 		}
 		return d;
 	}
 
 	static final String getAddr(String addr) {
+		checkFile(FILENAME);
 		String str = "";
 		try {
 			FileInputStream fis = new FileInputStream(FILENAME);
@@ -98,6 +105,8 @@ public class YssGPS {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		if (str.length() < 1) {
@@ -113,31 +122,14 @@ public class YssGPS {
 	static final String getLoByString(String lo) {
 		return String.valueOf(getLo(Double.valueOf(lo)));
 	}
-	
-	
-	
 
-	public static boolean setGPSInfo(double lo,double la,String address) {
-	
+	public static boolean setGPSInfo(double lo, double la, String address) {
+
 		checkFile(FILENAME);
-		
-		if (lo<73 || lo>136){
-			/**
-			 * 要在中国范围之内, 返回false,表示出错
-			 */
-			return false;
-		}
-		
-		if (la<3 || la>54){
-			return false;
-		}
-		
-		if (address.length()<1){
-			return false;
-		}
-		
+
 		try {
-			DataOutputStream dos = new DataOutputStream(new FileOutputStream(FILENAME));
+			DataOutputStream dos = new DataOutputStream(new FileOutputStream(
+					FILENAME));
 			// 先保存纬度,再保存经度
 			dos.writeDouble(la); // 纬度
 			dos.writeDouble(lo); // 经度
@@ -146,6 +138,8 @@ public class YssGPS {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return true;
@@ -157,12 +151,11 @@ public class YssGPS {
 		 */
 		String s = "";
 		s += "经度(double):" + YssGPS.getLo(0) + "\n";
-		s += "经度(String):" + YssGPS.getLoByString(0+"") + "\n";
+		s += "经度(String):" + YssGPS.getLoByString(0 + "") + "\n";
 		s += "纬度(double):" + YssGPS.getLa(0) + "\n";
-		s += "纬度:(String)" + YssGPS.getLaByString(0+"") + "\n";
+		s += "纬度:(String)" + YssGPS.getLaByString(0 + "") + "\n";
 		s += "地址:" + YssGPS.getAddr("未设置地址!!签到软件取自己定位的地址.") + "\n";
 		return s;
 	}
-	
-	
+
 }
