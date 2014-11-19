@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -33,7 +36,6 @@ public class ListActivity extends Activity {
 	Button buttonAdd;
 	Button buttonOK;
 	EditText et;
-	// TextView mUserInfo;
 	SQLiteDatabase db;
 	List<Map<String, Object>> data;
 
@@ -42,6 +44,10 @@ public class ListActivity extends Activity {
 	private EditText editTextla;
 	private EditText editTextaddr;
 
+	public LocationClient mLocationClient = null;
+	public BDLocationListener myListener = new MyLocationListener();
+
+	
 	SimpleAdapter mSimpleAdapter;
 	private Button buttonDel;
 
