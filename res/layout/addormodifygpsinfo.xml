@@ -35,6 +35,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="#eeeeee"
                     android:editable="false"
                     android:ems="10" >
                 </EditText>
@@ -58,7 +59,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:ems="10"
                     android:inputType="numberDecimal" >
 
                     <requestFocus />
@@ -82,7 +82,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:ems="10"
                     android:inputType="numberDecimal" >
                 </EditText>
             </LinearLayout>
@@ -104,7 +103,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="北京市东城区白桥大街15号"
                     android:singleLine="true" >
                 </EditText>
             </LinearLayout>
