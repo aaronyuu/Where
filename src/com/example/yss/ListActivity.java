@@ -150,18 +150,22 @@ public class ListActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-								
-				if (delGPSInfo(Long.valueOf(editTextid.getText().toString()))>0) {
-					mView.setVisibility(View.INVISIBLE);
-					Toast.makeText(mContext, "保存删除成功!!", Toast.LENGTH_SHORT)
-							.show();
-				} else {
-					Toast.makeText(mContext, "保存删除失败", Toast.LENGTH_SHORT)
-							.show();
+
+				 
+				if (editTextid.getText().length() >0) {
+					if (delGPSInfo(Long.valueOf(editTextid.getText().toString())) > 0) {
+						mView.setVisibility(View.INVISIBLE);
+						// 刷新数据
+						getData();
+						mSimpleAdapter.notifyDataSetChanged();
+						Toast.makeText(mContext, "删除成功!!", Toast.LENGTH_SHORT)
+								.show();
+					} else {
+						Toast.makeText(mContext, "删除失败", Toast.LENGTH_SHORT)
+								.show();
+					}
+
 				}
-				// 刷新数据
-				getData();
-				mSimpleAdapter.notifyDataSetChanged();
 			}
 		});
 
@@ -245,8 +249,12 @@ public class ListActivity extends Activity {
 	 * 删除
 	 */
 	private int delGPSInfo(long _id) {
-
-	return db.delete(TAB_GPSINFO, "_id =?", new String[] { String.valueOf(_id) });
+		if (_id >= 0) {
+			return db.delete(TAB_GPSINFO, "_id =?",
+					new String[] { String.valueOf(_id) });
+		} else {
+			return -1;
+		}
 	}
 
 	private long getCount(long id) {
@@ -256,8 +264,6 @@ public class ListActivity extends Activity {
 		cr.moveToFirst();
 		return cr.getLong(cr.getColumnIndex("count"));
 	}
-
-	
 
 	// @Override
 	// protected void onDestroy() {
