@@ -28,6 +28,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="软件重置" />
+        android:text="清空数据" />
 
 </LinearLayout>

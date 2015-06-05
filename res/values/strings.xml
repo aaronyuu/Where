@@ -6,10 +6,8 @@
     <string name="action_settings">Settings</string>
     <string name="nowAddress">当前位置信息</string>
     <string name="hshowAddressinfo">显示当前位置信息</string>
-    <string name="about">仅供编程学习,不要使用该软件挑战公司考勤制度.对于使用软件造成的任何后果由个人承担.\n 版本V1.1 \n 2014年11月16日</string>
-
-    
-        <string name="startlocation">开启定位</string>
+    <string name="about">\t仅供编程学习,好好工作,天天向上!!  对于使用软件造成的任何后果由个人承担. \n\n 版本V1.2.3 \n 2014年11月28日</string>
+    <string name="startlocation">开启定位</string>
     <string name="stoplocation">停止定位</string>
     <string name="error_code_desc">错误码说明</string>
     <string name="qa_title">常见问题</string>
@@ -32,6 +30,5 @@
 		501～700：key验证失败\n</string>
     <string name="qa_callback">问题反馈方法</string>
     <string name="qa_callback_mail">mapapi@baidu.com</string>
-    
-    
+
 </resources>

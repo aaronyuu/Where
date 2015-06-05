@@ -404,4 +404,13 @@ public class ListActivity extends Activity {
 
 	}
 
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		// Ë¢ÐÂÊý¾Ý
+		getData();
+		mSimpleAdapter.notifyDataSetChanged();
+	}
+
 }
